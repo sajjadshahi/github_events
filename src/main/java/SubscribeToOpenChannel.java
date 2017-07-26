@@ -25,6 +25,8 @@ public class SubscribeToOpenChannel {
             public void onSubscriptionData(SubscriptionData data) {
                 for (AnyJson json : data.getMessages()) {
                     System.out.println("Got message: " + json.toString());
+                    GithubData sampleData1 = json.convertToType( GithubData.class );
+                    System.out.println(sampleData1.actor.url );
                 }
             }
         };
