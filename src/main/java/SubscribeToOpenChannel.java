@@ -6,6 +6,7 @@ public class SubscribeToOpenChannel {
     static final String appkey = "783ecdCcb8c5f9E66A56cBFeeeB672C3";
     static final String channel = "github-events";
 
+
     public static void main(String[] args) throws InterruptedException {
         final RtmClient client = new RtmClientBuilder(endpoint, appkey)
                 .setListener(new RtmClientAdapter() {
