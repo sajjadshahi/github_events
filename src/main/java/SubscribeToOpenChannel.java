@@ -1,6 +1,8 @@
 import com.satori.rtm.*;
 import com.satori.rtm.model.*;
 
+
+
 public class SubscribeToOpenChannel {
     static final String endpoint = "wss://open-data.api.satori.com";
     static final String appkey = "783ecdCcb8c5f9E66A56cBFeeeB672C3";
