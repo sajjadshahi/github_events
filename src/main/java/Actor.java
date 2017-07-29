@@ -3,5 +3,10 @@
  */
 class Actor {
     int id;
-    String url;
+    String name, url;
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.id == ((Actor) obj).id;
+    }
 }
