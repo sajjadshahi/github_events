@@ -40,26 +40,27 @@ public class SubscribeToOpenChannel {
 //                    System.out.println("Got message: " + json.toString());
                     GithubData sample = json.convertToType(GithubData.class);
 //                    System.out.println(sample.payload.pull_request.head.repo.language);
-                    String lng = sample.payload.pull_request.head.repo.language;
+                    System.out.println(sample.type);
                     int actorId = sample.actor.id;
 //                    System.out.println(System.nanoTime());
-                    if (lng != null)
-                        if (languagesTrie.search(lng)) {
-                            languagesTrie.increment(lng);
-                        } else {
-                            languages.add(lng);
-                            languagesTrie.insert(lng);
-                            languagesTrie.increment(lng);
-                        }
-                    if (users.containsKey(actorId)){
-                        System.out.println(users.get(actorId));
-                        users.put(actorId, users.get(actorId) + 1);
-                    }
-                    else{
-                        users.put(actorId, 1);
-                    }
+//                    if (lng != null)
+//                        if (languagesTrie.search(lng)) {
+//                            languagesTrie.increment(lng);
+//                        } else {
+//                            languages.add(lng);
+//                            languagesTrie.insert(lng);
+//                            languagesTrie.increment(lng);
+//                        }
+//                    if (users.containsKey(actorId)){
+//                        System.out.println(users.get(actorId));
+//                        users.put(actorId, users.get(actorId) + 1);
+//                    }
+//                    else{
+//                        users.put(actorId, 1);
+//                    }
 
                 }
+
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
                             @Override

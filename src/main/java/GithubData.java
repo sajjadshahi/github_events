@@ -3,22 +3,6 @@
  */
 public class GithubData {
     Actor actor;
-    String id;
+    String id, type;
     PayLoad payload;
-}
-class Actor {
-    int id;
-    String url;
-}
-class PayLoad{
-    PullRequest pull_request;
-}
-class PullRequest{
-    Head head;
-}
-class Head{
-    Repo repo;
-}
-class Repo{
-    String language;
 }
