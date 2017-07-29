@@ -1,11 +1,9 @@
 import com.satori.rtm.*;
 import com.satori.rtm.model.*;
 
-import java.util.HashMap;
+import java.util.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 
 public class SubscribeToOpenChannel {
@@ -17,8 +15,8 @@ public class SubscribeToOpenChannel {
     public static Trie languagesTrie = new Trie();
 
     public static ArrayList<String> languages = new ArrayList<String>();
-    public static HashMap<Actor, Integer> users = new HashMap<>();
-    public static HashMap<Repository, Integer> repos = new HashMap<>();
+    public static TreeMap<Actor, Integer> users = new TreeMap<>();
+    public static TreeMap<Repository, Integer> repos = new TreeMap<>();
 
     public static void main(String[] args) throws InterruptedException {
         final RtmClient client = new RtmClientBuilder(endpoint, appkey)
@@ -45,7 +43,7 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)){
                                 repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository));
+                                System.out.println(repos.get(repository) + " " + repository.url);
                             }else{
                                 repos.put(repository, 1);
                             }
@@ -60,7 +58,7 @@ public class SubscribeToOpenChannel {
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)){
                                 users.put(actor, users.get(actor) + 1);
-                                System.out.println("USER: " + users.get(actor));
+                                System.out.println(actor.url + " " + users.get(actor));
                             }
                             else{
                                 users.put(actor, 1);
@@ -71,14 +69,14 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)){
                                 repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository));
+                                System.out.println(repos.get(repository) + " " + repository.url);
                             }else{
                                 repos.put(repository, 1);
                             }
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)){
                                 users.put(actor, users.get(actor) + 1);
-                                System.out.println("USER: " + users.get(actor));
+                                System.out.println(actor.url + " " + users.get(actor));
                             }
                             else{
                                 users.put(actor, 1);
@@ -89,14 +87,14 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)){
                                 repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository));
+                                System.out.println(repos.get(repository) + " " + repository.url);
                             }else{
                                 repos.put(repository, 1);
                             }
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)){
                                 users.put(actor, users.get(actor) + 1);
-                                System.out.println("USER: " + users.get(actor));
+                                System.out.println(actor.url + " " + users.get(actor));
                             }
                             else{
                                 users.put(actor, 1);
@@ -107,14 +105,14 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)){
                                 repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository));
+                                System.out.println(repos.get(repository) + " " + repository.url);
                             }else{
                                 repos.put(repository, 1);
                             }
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)){
                                 users.put(actor, users.get(actor) + 1);
-                                System.out.println("USER: " + users.get(actor));
+                                System.out.println(actor.url + " " + users.get(actor));
                             }
                             else{
                                 users.put(actor, 1);
