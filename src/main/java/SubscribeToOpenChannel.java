@@ -1,13 +1,14 @@
 import com.satori.rtm.*;
 import com.satori.rtm.model.*;
 
+import java.util.HashMap;
+
 
 public class SubscribeToOpenChannel {
     static final String endpoint = "wss://open-data.api.satori.com";
     static final String appkey = "783ecdCcb8c5f9E66A56cBFeeeB672C3";
     static final String channel = "github-events";
-    static final String filter = "select * from `github-events` where type='DeleteEvent'";
-
+//    static final String filter = "select * from `github-events'";
 
     public static void main(String[] args) throws InterruptedException {
         final RtmClient client = new RtmClientBuilder(endpoint, appkey)
@@ -26,14 +27,13 @@ public class SubscribeToOpenChannel {
                 for (AnyJson json : data.getMessages()) {
                     System.out.println("Got message: " + json.toString());
                     GithubData sampleData1 = json.convertToType(GithubData.class);
-                    System.out.println(sampleData1.actor.url);
                 }
             }
         };
 
-        SubscriptionConfig cfg = new SubscriptionConfig(SubscriptionMode.SIMPLE, listener)
-                .setFilter(filter);
-        client.createSubscription(channel, cfg);
+//        SubscriptionConfig cfg = new SubscriptionConfig(SubscriptionMode.SIMPLE, listener).setFilter(filter);
+//        client.createSubscription(channel, cfg);
+        client.createSubscription(channel, SubscriptionMode.SIMPLE, listener);
 
         client.start();
     }
