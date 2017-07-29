@@ -3,4 +3,5 @@
  */
 public class PullRequestData extends GithubData {
     PullPayLoad payload;
+
 }

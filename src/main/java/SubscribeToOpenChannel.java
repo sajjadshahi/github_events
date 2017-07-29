@@ -12,10 +12,9 @@ public class SubscribeToOpenChannel {
     static final String endpoint = "wss://open-data.api.satori.com";
     static final String appkey = "783ecdCcb8c5f9E66A56cBFeeeB672C3";
     static final String channel = "github-events";
-//    static final String filter = "select * from `github-events'";
+    //    static final String filter = "select * from `github-events'";
     static final String filter = "select * from `github-events`";
     public static Trie languagesTrie = new Trie();
-
 
     public static ArrayList<String> languages = new ArrayList<String>();
     public static HashMap<Integer, Integer> users = new HashMap<>();
@@ -35,32 +34,41 @@ public class SubscribeToOpenChannel {
             public void onSubscriptionData(SubscriptionData data) {
                 long time = System.nanoTime();
                 for (AnyJson json : data.getMessages()) {
-                    System.out.println("Got message: " + json.toString());
-                    GithubData sampleData1 = json.convertToType(GithubData.class);
 //                    System.out.println("Got message: " + json.toString());
                     GithubData sample = json.convertToType(GithubData.class);
-//                    System.out.println(sample.payload.pull_request.head.repo.language);
-                    System.out.println(sample.type);
                     int actorId = sample.actor.id;
-//                    System.out.println(System.nanoTime());
-//                    if (lng != null)
-//                        if (languagesTrie.search(lng)) {
-//                            languagesTrie.increment(lng);
-//                        } else {
-//                            languages.add(lng);
-//                            languagesTrie.insert(lng);
-//                            languagesTrie.increment(lng);
-//                        }
-//                    if (users.containsKey(actorId)){
-//                        System.out.println(users.get(actorId));
-//                        users.put(actorId, users.get(actorId) + 1);
-//                    }
-//                    else{
-//                        users.put(actorId, 1);
-//                    }
+                    String type = sample.type;
+                    System.out.println(type);
+                    switch (type){
+                        case "PullRequestEvent":{
+                            sample = json.convertToType(PullRequestData.class);
+                            String lng = ((PullRequestData) sample).payload.pull_request.head.repo.language;
+                            System.out.println(lng);
+                            if (lng != null)
+                                if (languagesTrie.search(lng)) {
+                                    languagesTrie.increment(lng);
+                                } else {
+                                    languages.add(lng);
+                                    languagesTrie.insert(lng);
+                                    languagesTrie.increment(lng);
+                                }
+                            if (users.containsKey(actorId)){
+                                System.out.println(users.get(actorId));
+                                users.put(actorId, users.get(actorId) + 1);
+                            }
+                            else{
+                                users.put(actorId, 1);
+                            }
+                            break;
+                        }
+                        case "PushEvent":{
+
+                        }
+                    }
+
+
 
                 }
-
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
                             @Override
@@ -71,11 +79,11 @@ public class SubscribeToOpenChannel {
                                 }
                                 System.out.println(" - - - - - - - - - - - - - - -");
                                 Iterator it = users.entrySet().iterator();
-                                /*while (it.hasNext()) {
+                                while (it.hasNext()) {
                                     HashMap.Entry pair = (HashMap.Entry)it.next();
                                     System.out.println(pair.getKey() + " : " + pair.getValue());
                                     it.remove();
-                                }*/
+                                }
                             }
                         },
                         60000
