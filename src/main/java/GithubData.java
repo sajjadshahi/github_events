@@ -5,4 +5,5 @@ public class GithubData {
     Actor actor;
     String id, type;
     PayLoad payload;
+    Repository repo;
 }
