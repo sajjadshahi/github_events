@@ -36,15 +36,66 @@ public class SubscribeToOpenChannel {
 //                    System.out.println("Got message: " + json.toString());
                     GithubData sample = json.convertToType(GithubData.class);
                     String type = sample.type;
-                    switch (type){
-                        case "PullRequestEvent":{
-                            sample = json.convertToType(PullRequestData.class);
-                            String lng = ((PullRequestData) sample).payload.pull_request.head.repo.language;
+                    switch (type) {
+                        case "PushEvent": {
                             Repository repository = sample.repo;
-                            if (repos.containsKey(repository)){
+                            if (repos.containsKey(repository)) {
                                 repos.put(repository, repos.get(repository) + 1);
                                 System.out.println(repos.get(repository) + " " + repository.url);
-                            }else{
+                            } else {
+                                repos.put(repository, 1);
+                            }
+                            Actor actor = sample.actor;
+                            if (users.containsKey(actor)) {
+                                users.put(actor, users.get(actor) + 1);
+                                System.out.println(actor.url + " " + users.get(actor));
+                            } else {
+                                users.put(actor, 1);
+                            }
+                            break;
+                        }
+                        case "ForkEvent": {
+                            Repository repository = sample.repo;
+                            if (repos.containsKey(repository)) {
+                                repos.put(repository, repos.get(repository) + 1);
+                                System.out.println(repos.get(repository) + " " + repository.url);
+                            } else {
+                                repos.put(repository, 1);
+                            }
+                            Actor actor = sample.actor;
+                            if (users.containsKey(actor)) {
+                                users.put(actor, users.get(actor) + 1);
+                                System.out.println(actor.url + " " + users.get(actor));
+                            } else {
+                                users.put(actor, 1);
+                            }
+                            break;
+                        }
+                        case "WatchEvent": {
+                            Repository repository = sample.repo;
+                            if (repos.containsKey(repository)) {
+                                repos.put(repository, repos.get(repository) + 1);
+                                System.out.println(repos.get(repository) + " " + repository.url);
+                            } else {
+                                repos.put(repository, 1);
+                            }
+                            Actor actor = sample.actor;
+                            if (users.containsKey(actor)) {
+                                users.put(actor, users.get(actor) + 1);
+                                System.out.println(actor.url + " " + users.get(actor));
+                            } else {
+                                users.put(actor, 1);
+                            }
+                            break;
+                        }
+                        case "PullRequestEvent": {
+//                            sample = json.convertToType(PullRequestData.class);
+                            String lng = sample.payload.pull_request.head.repo.language;
+                            Repository repository = sample.repo;
+                            if (repos.containsKey(repository)) {
+                                repos.put(repository, repos.get(repository) + 1);
+                                System.out.println(repos.get(repository) + " " + repository.url);
+                            } else {
                                 repos.put(repository, 1);
                             }
                             if (lng != null)
@@ -56,97 +107,19 @@ public class SubscribeToOpenChannel {
                                     languagesTrie.increment(lng);
                                 }
                             Actor actor = sample.actor;
-                            if (users.containsKey(actor)){
+                            if (users.containsKey(actor)) {
                                 users.put(actor, users.get(actor) + 1);
                                 System.out.println(actor.url + " " + users.get(actor));
-                            }
-                            else{
-                                users.put(actor, 1);
-                            }
-                            break;
-                        }
-                        case "PushEvent":{
-                            Repository repository = sample.repo;
-                            if (repos.containsKey(repository)){
-                                repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository) + " " + repository.url);
-                            }else{
-                                repos.put(repository, 1);
-                            }
-                            Actor actor = sample.actor;
-                            if (users.containsKey(actor)){
-                                users.put(actor, users.get(actor) + 1);
-                                System.out.println(actor.url + " " + users.get(actor));
-                            }
-                            else{
-                                users.put(actor, 1);
-                            }
-                            break;
-                        }
-                        case "ForkEvent":{
-                            Repository repository = sample.repo;
-                            if (repos.containsKey(repository)){
-                                repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository) + " " + repository.url);
-                            }else{
-                                repos.put(repository, 1);
-                            }
-                            Actor actor = sample.actor;
-                            if (users.containsKey(actor)){
-                                users.put(actor, users.get(actor) + 1);
-                                System.out.println(actor.url + " " + users.get(actor));
-                            }
-                            else{
-                                users.put(actor, 1);
-                            }
-                            break;
-                        }
-                        case "WatchEvent":{
-                            Repository repository = sample.repo;
-                            if (repos.containsKey(repository)){
-                                repos.put(repository, repos.get(repository) + 1);
-                                System.out.println(repos.get(repository) + " " + repository.url);
-                            }else{
-                                repos.put(repository, 1);
-                            }
-                            Actor actor = sample.actor;
-                            if (users.containsKey(actor)){
-                                users.put(actor, users.get(actor) + 1);
-                                System.out.println(actor.url + " " + users.get(actor));
-                            }
-                            else{
+                            } else {
                                 users.put(actor, 1);
                             }
                             break;
                         }
                     }
-
-
-
                 }
-               /* new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                System.out.println(" - - - - - - - - - - - - - - -");
-                                for (String str : languages) {
-                                    System.out.println(str + " : " + languagesTrie.getOccurences(str));
-                                }
-                                System.out.println(" - - - - - - - - - - - - - - -");
-                                Iterator it = users.entrySet().iterator();
-                                while (it.hasNext()) {
-                                    HashMap.Entry pair = (HashMap.Entry)it.next();
-                                    System.out.println(pair.getKey() + " : " + pair.getValue());
-                                    it.remove();
-                                }
-                            }
-                        },
-                        60000
-                );*/
+
             }
-
         };
-
 //        SubscriptionConfig cfg = new SubscriptionConfig(SubscriptionMode.SIMPLE, listener).setFilter(filter);
 //        client.createSubscription(channel, cfg);
         client.createSubscription(channel, SubscriptionMode.SIMPLE, listener);

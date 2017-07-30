@@ -3,4 +3,5 @@
  */
 class PayLoad{
     int size;
+    PullRequest pull_request;
 }
