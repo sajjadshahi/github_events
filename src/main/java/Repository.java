@@ -7,17 +7,16 @@ public class Repository implements Comparable {
     public String toString(){
         return "Repo: " + id + "\nName : " + name + " | url : " + url;
     }
+
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Integer.hashCode(id);
     }
 
     @Override
     public boolean equals(Object obj) {
-        System.out.println(this.id + " == " + ((Repository) obj).id);
         return  this.id == ((Repository) obj).id;
     }
-
     @Override
     public int compareTo(Object o) {
         if ( ((Repository) o).id > this.id){
