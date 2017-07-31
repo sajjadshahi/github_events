@@ -40,17 +40,19 @@ public class SubscribeToOpenChannel {
                     switch (type) {
                         case "PushEvent": {
                             Repository repository = sample.repo;
-                            if (repos.containsKey(repository)) {
-                                repos.put(repository, new DataCount( repos.get(repository), 0, sample.payload.size ) );
+                            if (sample.payload.size > 0) {
+                                if (repos.containsKey(repository)) {
+                                    repos.put(repository, new DataCount(repos.get(repository), 0, sample.payload.size));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository) + " | size: " + sample.payload.size);
-                            } else {
-                                repos.put(repository, new DataCount(sample.payload.size, 0, 0, 0) );
-                            }
-                            Actor actor = sample.actor;
-                            if (users.containsKey(actor)) {
-                                users.put(actor, new DataCount( users.get(repository), 0, sample.payload.size ));
-                            } else {
-                                users.put(actor, new DataCount(sample.payload.size, 0, 0, 0) );
+                                } else {
+                                    repos.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
+                                }
+                                Actor actor = sample.actor;
+                                if (users.containsKey(actor)) {
+                                    users.put(actor, new DataCount(users.get(repository), 0, sample.payload.size));
+                                } else {
+                                    users.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
+                                }
                             }
                             break;
                         }
