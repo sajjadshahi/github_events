@@ -83,6 +83,18 @@ public class IntervalHandlerThread extends Thread {
                         for (Map.Entry<Actor, DataCount> o: usersList) {
                             System.out.println(o.getKey().login + " : " + o.getValue().toString());
                         }
+                        ArrayList<LanguageCountPair> languageCountPairs = new ArrayList<>();
+                        for (String s: SubscribeToOpenChannel.languages){
+                            languageCountPairs.add(new LanguageCountPair(s, SubscribeToOpenChannel.languagesTrie.getOccurences(s)));
+                        }
+                        Collections.sort(languageCountPairs, new Comparator<LanguageCountPair>() {
+                            @Override
+                            public int compare(LanguageCountPair o1, LanguageCountPair o2) {
+                                return (o1.count).compareTo(o2.count);
+                            }
+                        });
+                        Collections.reverse(languageCountPairs);
+                        System.out.println(languageCountPairs);
                         break;
 
                     case HOUR:
