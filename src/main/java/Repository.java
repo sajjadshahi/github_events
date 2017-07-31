@@ -10,7 +10,7 @@ public class Repository implements Comparable {
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(id);
+        return name.hashCode();
     }
 
     @Override

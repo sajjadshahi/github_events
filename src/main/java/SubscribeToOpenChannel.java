@@ -16,8 +16,8 @@ public class SubscribeToOpenChannel {
     public static Trie languagesTrie = new Trie();
 
     public static ArrayList<String> languages = new ArrayList<String>();
-    public static ConcurrentHashMap<Actor, Integer> users = new ConcurrentHashMap<>();
-    public static ConcurrentHashMap<Repository, Integer> repos = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Actor, DataCount> users = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Repository, DataCount> repos = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -41,36 +41,36 @@ public class SubscribeToOpenChannel {
                         case "PushEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, repos.get(repository) + sample.payload.size);
+                                repos.put(repository, new DataCount( repos.get(repository), 0, sample.payload.size ) );
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository) + " | size: " + sample.payload.size);
                             } else {
-                                repos.put(repository, 1);
+                                repos.put(repository, new DataCount(sample.payload.size, 0, 0, 0) );
                             }
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)) {
-                                users.put(actor, users.get(actor) + 1);
+                                users.put(actor, new DataCount( users.get(repository), 0, sample.payload.size ));
                             } else {
-                                users.put(actor, 1);
+                                users.put(actor, new DataCount(sample.payload.size, 0, 0, 0) );
                             }
                             break;
                         }
                         case "ForkEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, repos.get(repository) + 1);
+                                repos.put(repository, new DataCount( repos.get(repository), 1, sample.payload.size ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
-                                repos.put(repository, 1);
+                                repos.put(repository, new DataCount(0, 1, 0, 0));
                             }
                             break;
                         }
                         case "WatchEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, repos.get(repository) + 1);
+                                repos.put(repository, new DataCount( repos.get(repository), 2, sample.payload.size ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
-                                repos.put(repository, 1);
+                                repos.put(repository, new DataCount(0, 0, 1, 0));
                             }
                             break;
                         }
@@ -93,9 +93,9 @@ public class SubscribeToOpenChannel {
                                 }
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)) {
-                                users.put(actor, users.get(actor) + 1);
+                                users.put(actor, new DataCount( users.get(actor), 3, 1) );
                             } else {
-                                users.put(actor, 1);
+                                users.put(actor, new DataCount(0, 0, 0, 1));
                             }
                             break;
                         }
