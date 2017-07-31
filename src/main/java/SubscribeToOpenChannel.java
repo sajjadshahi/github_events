@@ -20,6 +20,7 @@ public class SubscribeToOpenChannel {
     public static ConcurrentHashMap<Repository, Integer> repos = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws InterruptedException {
+
         final RtmClient client = new RtmClientBuilder(endpoint, appkey)
                 .setListener(new RtmClientAdapter() {
                     @Override
@@ -41,24 +42,23 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
                                 repos.put(repository, repos.get(repository) + sample.payload.size);
-                                System.out.println("repo : " + repository.name + " | " + repos.get(repository) + " | size: " + sample.payload.size);
+//                                System.out.println("repo : " + repository.name + " | " + repos.get(repository) + " | size: " + sample.payload.size);
                             } else {
                                 repos.put(repository, 1);
                             }
-                           /* Actor actor = sample.actor;
+                            Actor actor = sample.actor;
                             if (users.containsKey(actor)) {
                                 users.put(actor, users.get(actor) + 1);
-                                System.out.println("user : " + actor.login + " | " + users.get(actor));
                             } else {
                                 users.put(actor, 1);
-                            }*/
+                            }
                             break;
                         }
                         case "ForkEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
                                 repos.put(repository, repos.get(repository) + 1);
-                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
+//                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, 1);
                             }
@@ -68,7 +68,7 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
                                 repos.put(repository, repos.get(repository) + 1);
-                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
+//                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, 1);
                             }
@@ -91,13 +91,12 @@ public class SubscribeToOpenChannel {
                                     languagesTrie.insert(lng);
                                     languagesTrie.increment(lng);
                                 }
-                          /*  Actor actor = sample.actor;
+                            Actor actor = sample.actor;
                             if (users.containsKey(actor)) {
                                 users.put(actor, users.get(actor) + 1);
-                                System.out.println("user : " + actor.login + " | " + users.get(actor));
                             } else {
                                 users.put(actor, 1);
-                            }*/
+                            }
                             break;
                         }
                     }
@@ -106,7 +105,9 @@ public class SubscribeToOpenChannel {
             }
         };
         client.createSubscription(channel, SubscriptionMode.SIMPLE, listener);
-
         client.start();
+       new IntervalHandlerThread(IntervalHandlerThread.TimeMode.TENMIN).start();
+       new IntervalHandlerThread(IntervalHandlerThread.TimeMode.HOUR).start();
+       new IntervalHandlerThread(IntervalHandlerThread.TimeMode.DAY).start();
     }
 }
