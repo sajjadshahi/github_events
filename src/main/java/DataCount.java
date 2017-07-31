@@ -38,7 +38,20 @@ public class DataCount {
 
     @Override
     public String toString() {
-        return "commits " + commits + " | fork " + forks + " | watches" + watches + " | pull " + pullRequests;
+        String str = "";
+        if (commits > 0){
+            str += " Commits: " + commits;
+        }
+        if (forks > 0){
+            str += " Forks: " + forks;
+        }
+        if (watches > 0){
+            str += " Watches: " + watches;
+        }
+        if (pullRequests > 0){
+            str += " Pull Requests: " + pullRequests;
+        }
+        return str;
     }
 
     Integer getActivity(){
