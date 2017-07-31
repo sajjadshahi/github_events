@@ -38,10 +38,10 @@ public class DataCount {
 
     @Override
     public String toString() {
-        return "commits " + commits + "fork " + forks + "watches" + watches + "pull " + pullRequests;
+        return "commits " + commits + " | fork " + forks + " | watches" + watches + " | pull " + pullRequests;
     }
 
-    int getActivity(){
+    Integer getActivity(){
         return forks + commits + pullRequests + watches;
     }
 }

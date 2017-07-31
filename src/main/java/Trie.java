@@ -121,7 +121,7 @@ class Trie implements Serializable {
         }
         if (current.finished == true)
             return true;
-        System.out.println("'" + str + "' Not Found!");
+
         return false;
     }
 
@@ -146,7 +146,7 @@ class Trie implements Serializable {
         TrieNode current = root;
         for (char ch : str.toCharArray()) {
             if (current.subNode(ch) == null) {
-                System.out.println(str + " Not Found");
+
                 return -1;
             } else
                 current = current.subNode(ch);
@@ -162,7 +162,6 @@ class Trie implements Serializable {
         TrieNode current = root;
         for (char ch : str.toCharArray()) {
             if (current.subNode(ch) == null) {
-                System.out.println(str + " Not Found");
                 return false;
             } else
                 current = current.subNode(ch);
