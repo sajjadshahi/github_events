@@ -1,9 +1,16 @@
-/**
+import com.mongodb.BasicDBObject; /**
  * Created by ASUS on 7/29/2017.
  */
 class Actor implements Comparable {
     int id;
     String login, url;
+
+    public Actor(BasicDBObject json) {
+        this.id = Integer.parseInt(json.getString("id"));
+        this.login = json.getString("login");
+        this.url = json.getString("url");
+
+    }
 
     @Override
     public boolean equals(Object obj) {
