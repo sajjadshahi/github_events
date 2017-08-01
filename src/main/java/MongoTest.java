@@ -1,12 +1,16 @@
 import com.mongodb.*;
 
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MongoTest {
 
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args) throws ParseException {
+        /*try {
             MongoClient mongoClient = new MongoClient("localhost", 27017);
             DB db = mongoClient.getDB("test");
             List<String> dbs = mongoClient.getDatabaseNames();
@@ -23,7 +27,11 @@ public class MongoTest {
             System.out.println(dbCollection.insert(basicDBObject));
         } catch (UnknownHostException e) {
             e.printStackTrace();
-        }
+        }*/
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+        System.out.println(sdf.format(new Date()));
 
     }
 }

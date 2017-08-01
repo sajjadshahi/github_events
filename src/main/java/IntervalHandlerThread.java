@@ -2,6 +2,7 @@ import com.mongodb.*;
 
 import javax.xml.crypto.Data;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
@@ -72,7 +73,9 @@ public class IntervalHandlerThread extends Thread {
                             }
                             result.put("topRepos", resultList);
                             result.put("type", "tenMin");
-                            result.put("time", System.nanoTime());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+                            result.put("time", sdf.format(new Date()));
+                            dbCollection.insert(result);
                             System.out.println("------ TOP USERS : ");
                             Set<Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users.entrySet();
                             List<Map.Entry<Actor, DataCount>> usersList = new ArrayList<>(usersSet);
