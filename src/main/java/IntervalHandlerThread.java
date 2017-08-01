@@ -33,10 +33,9 @@ public class IntervalHandlerThread extends Thread {
                 try {
                     switch (timeMode) {
                         case TENMIN:
-                            System.out.println("THREAD STARTED RUNNING");
                             Thread.sleep(60000);
-                            System.out.println("------ TOP REPOS : ");
                             DBCollection dbCollection = db.getCollection("results");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
                             Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();
                             List<Map.Entry<Repository, DataCount>> reposList = new ArrayList<>(reposSet);
                             SubscribeToOpenChannel.repos.clear();
@@ -49,11 +48,11 @@ public class IntervalHandlerThread extends Thread {
                             });
                             Collections.reverse(reposList);
 
-                            BasicDBObject resultRepo = new BasicDBObject();
+                            BasicDBObject mainDocument = new BasicDBObject();
                             BasicDBList resultRepoList = new BasicDBList();
 //                            BasicDBList reposListJSON = new BasicDBList();
                             for (Map.Entry<Repository, DataCount> o : reposList) {
-                                if(o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity() == 0)
                                     continue;
 
                                 System.out.println(o.getKey().name + " : " + o.getValue().toString());
@@ -78,11 +77,7 @@ public class IntervalHandlerThread extends Thread {
 
                             }
 
-                            resultRepo.put("topRepos", resultRepoList);
-                            resultRepo.put("type", "tenMin");
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-                            resultRepo.put("time", sdf.format(new Date()));
-//                            dbCollection.insert(resultRepo);
+//                            dbCollection.insert(mainDocument);
 
                             System.out.println("------ TOP USERS : ");
                             Set<Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users.entrySet();
@@ -96,29 +91,11 @@ public class IntervalHandlerThread extends Thread {
                                 }
                             });
                             Collections.reverse(usersList);
-                            for (Map.Entry<Actor, DataCount> o : usersList) {
-                                System.out.println(o.getKey().login + " : " + o.getValue().toString());
-                            }
-                            ArrayList<LanguageCountPair> languageCountPairs = new ArrayList<>();
-                            for (String s : SubscribeToOpenChannel.languages) {
-                                languageCountPairs.add(new LanguageCountPair(s, SubscribeToOpenChannel.languagesTrie.getOccurences(s)));
-                            }
-                            Collections.sort(languageCountPairs, new Comparator<LanguageCountPair>() {
-                                @Override
-                                public int compare(LanguageCountPair o1, LanguageCountPair o2) {
-                                    return (o1.count).compareTo(o2.count);
-                                }
-                            });
-                            Collections.reverse(languageCountPairs);
 
-                            BasicDBObject resultUser = new BasicDBObject();
                             BasicDBList resultUserList = new BasicDBList();
-//                            BasicDBList reposListJSON = new BasicDBList();
                             for (Map.Entry<Actor, DataCount> o : usersList) {
-                                if(o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity() == 0)
                                     continue;
-
-                                System.out.println(o.getKey().login + " : " + o.getValue().toString());
                                 BasicDBObject resultUserData = new BasicDBObject();
                                 BasicDBObject userJson = new BasicDBObject();
                                 BasicDBObject activityJson = new BasicDBObject();
@@ -139,14 +116,34 @@ public class IntervalHandlerThread extends Thread {
                                 resultUserList.add(resultUserData);
 
                             }
+                            ArrayList<LanguageCountPair> languageCountPairs = new ArrayList<>();
+                            for (String s : SubscribeToOpenChannel.languages) {
+                                languageCountPairs.add(new LanguageCountPair(s, SubscribeToOpenChannel.languagesTrie.getOccurences(s)));
+                            }
+                            Collections.sort(languageCountPairs, new Comparator<LanguageCountPair>() {
+                                @Override
+                                public int compare(LanguageCountPair o1, LanguageCountPair o2) {
+                                    return (o1.count).compareTo(o2.count);
+                                }
+                            });
 
-                            resultRepo.put("topUsers", resultUserList);
-//                            resultUser.put("type", "tenMin");
-//                            resultUser.put("time", sdf.format(new Date()));
-                            dbCollection.insert(resultRepo);
+                            BasicDBList languagesList = new BasicDBList();
+                            Collections.reverse(languageCountPairs);
+                            for (LanguageCountPair lcp : languageCountPairs) {
+                                BasicDBObject languageJSON = new BasicDBObject();
 
+                                languageJSON.put("language", lcp.lng);
+                                languageJSON.put("count", lcp.count);
 
-                            System.out.println(languageCountPairs);
+                                languagesList.add(languageJSON);
+                            }
+                            mainDocument.put("topUsers", resultUserList);
+                            mainDocument.put("topLanguages", languagesList);
+                            mainDocument.put("topRepos", resultRepoList);
+                            mainDocument.put("type", "tenMin");
+                            mainDocument.put("time", sdf.format(new Date()));
+                            dbCollection.insert(mainDocument);
+                            System.out.println("10 Min Analysis Done !");
                             break;
 
                         case HOUR:
