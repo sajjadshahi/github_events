@@ -55,7 +55,6 @@ public class SubscribeToOpenChannel {
 
                     dbCollection.insert(dbo);
 
-                    System.out.println();
                     GithubData sample = json.convertToType(GithubData.class);
                     String type = sample.type;
                     switch (type) {

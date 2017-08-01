@@ -250,7 +250,7 @@ public class IntervalHandlerThread extends Thread {
                             mainDocument.put("topUsers", resultUserList);
                             mainDocument.put("topLanguages", languagesList);
                             mainDocument.put("topRepos", resultRepoList);
-                            mainDocument.put("type", "tenMin");
+                            mainDocument.put("type", "oneHour");
                             mainDocument.put("time", sdf.format(new Date()));
                             dbCollection.insert(mainDocument);
                             System.out.println("1 Hour Analysis Done !");
@@ -364,7 +364,7 @@ public class IntervalHandlerThread extends Thread {
                             mainDocument.put("topUsers", resultUserList);
                             mainDocument.put("topLanguages", languagesList);
                             mainDocument.put("topRepos", resultRepoList);
-                            mainDocument.put("type", "tenMin");
+                            mainDocument.put("type", "oneDay");
                             mainDocument.put("time", sdf.format(new Date()));
                             dbCollection.insert(mainDocument);
                             System.out.println("1 Hour Analysis Done !");
