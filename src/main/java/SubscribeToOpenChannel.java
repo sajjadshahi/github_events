@@ -14,6 +14,8 @@ public class SubscribeToOpenChannel {
     //    static final String filter = "select * from `github-events'";
     static final String filter = "select * from `github-events`";
     public static Trie languagesTrie = new Trie();
+    public static Trie languagesTrie2 = new Trie();
+    public static Trie languagesTrie3 = new Trie();
 
     public static ArrayList<String> languages = new ArrayList<String>();
     public static ConcurrentHashMap<Actor, DataCount> users = new ConcurrentHashMap<>();
@@ -51,13 +53,22 @@ public class SubscribeToOpenChannel {
                                     repos3.put(repository, new DataCount(repos3.get(repository), 0, sample.payload.size));
                                 } else {
                                     repos.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
+                                    repos2.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
+                                    repos3.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
                                 }
+
                                 Actor actor = sample.actor;
                                 if (users.containsKey(actor)) {
                                     users.put(actor, new DataCount(users.get(repository), 0, sample.payload.size));
+                                    users2.put(actor, new DataCount(users2.get(repository), 0, sample.payload.size));
+                                    users3.put(actor, new DataCount(users3.get(repository), 0, sample.payload.size));
+
                                 } else {
                                     users.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
+                                    users3.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
+                                    users2.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
                                 }
+
                             }
                             break;
                         }
@@ -65,9 +76,13 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
                                 repos.put(repository, new DataCount( repos.get(repository), 1, sample.payload.size ));
+                                repos2.put(repository, new DataCount( repos2.get(repository), 1, sample.payload.size ));
+                                repos3.put(repository, new DataCount( repos3.get(repository), 1, sample.payload.size ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, new DataCount(0, 1, 0, 0));
+                                repos2.put(repository, new DataCount(0, 1, 0, 0));
+                                repos3.put(repository, new DataCount(0, 1, 0, 0));
                             }
                             break;
                         }
@@ -75,27 +90,50 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
                                 repos.put(repository, new DataCount( repos.get(repository), 2, sample.payload.size ));
+                                repos2.put(repository, new DataCount( repos2.get(repository), 2, sample.payload.size ));
+                                repos3.put(repository, new DataCount( repos3.get(repository), 2, sample.payload.size ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, new DataCount(0, 0, 1, 0));
+                                repos2.put(repository, new DataCount(0, 0, 1, 0));
+                                repos3.put(repository, new DataCount(0, 0, 1, 0));
                             }
                             break;
                         }
                         case "PullRequestEvent": {
                             String lng = sample.payload.pull_request.head.repo.language;
                             if (lng != null)
+                                if (languagesTrie3.search(lng)) {
+                                    languagesTrie3.increment(lng);
+                                } else {
+                                    languages.add(lng);
+                                    languagesTrie3.insert(lng);
+                                    languagesTrie3.increment(lng);
+                                }
+
                                 if (languagesTrie.search(lng)) {
                                     languagesTrie.increment(lng);
                                 } else {
-                                    languages.add(lng);
                                     languagesTrie.insert(lng);
                                     languagesTrie.increment(lng);
                                 }
+
+                                if (languagesTrie2.search(lng)) {
+                                    languagesTrie2.increment(lng);
+                                } else {
+                                    languagesTrie2.insert(lng);
+                                    languagesTrie2.increment(lng);
+                                }
+
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)) {
                                 users.put(actor, new DataCount( users.get(actor), 3, 1) );
+                                users2.put(actor, new DataCount( users2.get(actor), 3, 1) );
+                                users3.put(actor, new DataCount( users3.get(actor), 3, 1) );
                             } else {
                                 users.put(actor, new DataCount(0, 0, 0, 1));
+                                users2.put(actor, new DataCount(0, 0, 0, 1));
+                                users3.put(actor, new DataCount(0, 0, 0, 1));
                             }
                             break;
                         }
