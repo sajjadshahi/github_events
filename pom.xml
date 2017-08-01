@@ -38,6 +38,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>2.10.1</version>
+    </dependency>
+    <dependency>
       <groupId>com.satori</groupId>
       <artifactId>satori-rtm-sdk</artifactId>
       <version>1.0.3</version>

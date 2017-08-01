@@ -17,7 +17,11 @@ public class SubscribeToOpenChannel {
 
     public static ArrayList<String> languages = new ArrayList<String>();
     public static ConcurrentHashMap<Actor, DataCount> users = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Actor, DataCount> users2 = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Actor, DataCount> users3 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Repository, DataCount> repos = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Repository, DataCount> repos2 = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Repository, DataCount> repos3 = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -43,7 +47,8 @@ public class SubscribeToOpenChannel {
                             if (sample.payload.size > 0) {
                                 if (repos.containsKey(repository)) {
                                     repos.put(repository, new DataCount(repos.get(repository), 0, sample.payload.size));
-//                                System.out.println("repo : " + repository.name + " | " + repos.get(repository) + " | size: " + sample.payload.size);
+                                    repos2.put(repository, new DataCount(repos2.get(repository), 0, sample.payload.size));
+                                    repos3.put(repository, new DataCount(repos3.get(repository), 0, sample.payload.size));
                                 } else {
                                     repos.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
                                 }
@@ -78,13 +83,6 @@ public class SubscribeToOpenChannel {
                         }
                         case "PullRequestEvent": {
                             String lng = sample.payload.pull_request.head.repo.language;
-                           /* Repository repository = sample.repo;
-                            if (repos.containsKey(repository)) {
-                                repos.put(repository, repos.get(repository) + 1);
-                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
-                            } else {
-                                repos.put(repository, 1);
-                            }*/
                             if (lng != null)
                                 if (languagesTrie.search(lng)) {
                                     languagesTrie.increment(lng);
