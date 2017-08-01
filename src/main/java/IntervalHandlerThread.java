@@ -33,7 +33,7 @@ public class IntervalHandlerThread extends Thread {
                 try {
                     switch (timeMode) {
                         case TENMIN:
-                            Thread.sleep(60000);
+                            Thread.sleep(10000);
                             DBCollection dbCollection = db.getCollection("results");
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
                             Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();
@@ -54,8 +54,6 @@ public class IntervalHandlerThread extends Thread {
                             for (Map.Entry<Repository, DataCount> o : reposList) {
                                 if (o.getValue().getActivity() == 0)
                                     continue;
-
-                                System.out.println(o.getKey().name + " : " + o.getValue().toString());
                                 BasicDBObject resultRepoData = new BasicDBObject();
                                 BasicDBObject repoJson = new BasicDBObject();
                                 BasicDBObject activityJson = new BasicDBObject();
@@ -76,10 +74,6 @@ public class IntervalHandlerThread extends Thread {
                                 resultRepoList.add(resultRepoData);
 
                             }
-
-//                            dbCollection.insert(mainDocument);
-
-                            System.out.println("------ TOP USERS : ");
                             Set<Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users.entrySet();
                             List<Map.Entry<Actor, DataCount>> usersList = new ArrayList<>(usersSet);
                             SubscribeToOpenChannel.users.clear();
@@ -118,8 +112,11 @@ public class IntervalHandlerThread extends Thread {
                             }
                             ArrayList<LanguageCountPair> languageCountPairs = new ArrayList<>();
                             for (String s : SubscribeToOpenChannel.languages) {
-                                languageCountPairs.add(new LanguageCountPair(s, SubscribeToOpenChannel.languagesTrie.getOccurences(s)));
+                                int occr = SubscribeToOpenChannel.languagesTrie.getOccurences(s);
+                                if (occr > 0)
+                                    languageCountPairs.add(new LanguageCountPair(s, occr));
                             }
+                            SubscribeToOpenChannel.languagesTrie = new Trie();
                             Collections.sort(languageCountPairs, new Comparator<LanguageCountPair>() {
                                 @Override
                                 public int compare(LanguageCountPair o1, LanguageCountPair o2) {
@@ -134,9 +131,9 @@ public class IntervalHandlerThread extends Thread {
 
                                 languageJSON.put("language", lcp.lng);
                                 languageJSON.put("count", lcp.count);
-
                                 languagesList.add(languageJSON);
                             }
+
                             mainDocument.put("topUsers", resultUserList);
                             mainDocument.put("topLanguages", languagesList);
                             mainDocument.put("topRepos", resultRepoList);

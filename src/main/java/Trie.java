@@ -68,6 +68,7 @@ class TrieNode implements Serializable {
     int count;
     ArrayList<TrieNode> childList;
     int occurence;
+
     public TrieNode(char c) {
         childList = new ArrayList<TrieNode>();
         finished = false;
@@ -75,9 +76,11 @@ class TrieNode implements Serializable {
         count = 0;
         occurence = 0;
     }
-    public void printAll(){
+
+    public void printAll() {
 
     }
+
     public TrieNode subNode(char c) {
         if (childList != null)
             for (TrieNode child : childList)
@@ -86,11 +89,16 @@ class TrieNode implements Serializable {
         return null;
     }
 }
+
 class Trie implements Serializable {
 
     private TrieNode root;
 
     public Trie() {
+        root = new TrieNode(' ');
+    }
+
+    public void clear() {
         root = new TrieNode(' ');
     }
 
@@ -142,7 +150,8 @@ class Trie implements Serializable {
         }
         current.finished = false;
     }
-    public int getOccurences (String str){
+
+    public int getOccurences(String str) {
         TrieNode current = root;
         for (char ch : str.toCharArray()) {
             if (current.subNode(ch) == null) {
@@ -158,7 +167,8 @@ class Trie implements Serializable {
         }
         return -1;
     }
-    public boolean increment (String str){
+
+    public boolean increment(String str) {
         TrieNode current = root;
         for (char ch : str.toCharArray()) {
             if (current.subNode(ch) == null) {
@@ -174,8 +184,6 @@ class Trie implements Serializable {
         }
         return false;
     }
-
-
 
 
 }
