@@ -33,7 +33,7 @@ public class IntervalHandlerThread extends Thread {
                 try {
                     switch (timeMode) {
                         case TENMIN:
-                            Thread.sleep(10000);
+                            Thread.sleep(60000);
                             DBCollection dbCollection = db.getCollection("results");
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
                             Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();

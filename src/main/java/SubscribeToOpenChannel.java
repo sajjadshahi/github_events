@@ -1,6 +1,10 @@
+import com.mongodb.*;
+import com.mongodb.util.JSON;
 import com.satori.rtm.*;
 import com.satori.rtm.model.*;
 
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.*;
 import java.util.HashMap;
@@ -25,7 +29,7 @@ public class SubscribeToOpenChannel {
     public static ConcurrentHashMap<Repository, DataCount> repos2 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Repository, DataCount> repos3 = new ConcurrentHashMap<>();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, UnknownHostException {
 
         final RtmClient client = new RtmClientBuilder(endpoint, appkey)
                 .setListener(new RtmClientAdapter() {
@@ -35,12 +39,23 @@ public class SubscribeToOpenChannel {
                     }
                 })
                 .build();
-
+        MongoClient mongoClient = new MongoClient("localhost", 27017);
+        DB db = mongoClient.getDB("githubTracking");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+        DBCollection dbCollection = db.getCollection("raw");
         SubscriptionAdapter listener = new SubscriptionAdapter() {
             @Override
             public void onSubscriptionData(SubscriptionData data) {
                 long time = System.nanoTime();
                 for (AnyJson json : data.getMessages()) {
+                    BasicDBObject dbo = new BasicDBObject();
+
+                    dbo.put("rawData", (DBObject) JSON.parse(json.toString()));
+                    dbo.put("date", sdf.format(new Date()));
+
+                    dbCollection.insert(dbo);
+
+                    System.out.println();
                     GithubData sample = json.convertToType(GithubData.class);
                     String type = sample.type;
                     switch (type) {
