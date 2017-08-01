@@ -2,7 +2,7 @@
  * Created by ASUS on 7/31/2017.
  */
 public class DataCount {
-    int forks, commits, pullRequests, watches;
+    int forks, commits, pullRequests, watches, issues, issueComments;
 
     public DataCount(DataCount dataCount, int type, int val) {
         forks = dataCount.forks;
@@ -26,14 +26,23 @@ public class DataCount {
                 pullRequests += val;
                 break;
 
+            case 4:
+                issues += val;
+                break;
+
+            case 5:
+                issueComments += val;
+                break;
         }
     }
 
-    public DataCount(int commits, int forks, int watches, int pullRequests) {
+    public DataCount(int commits, int forks, int watches, int pullRequests, int issues, int issueComments) {
         this.forks = forks;
         this.commits = commits;
         this.watches = watches;
         this.pullRequests = pullRequests;
+        this.issues = issues;
+        this.issueComments = issueComments;
     }
 
     @Override
@@ -54,7 +63,24 @@ public class DataCount {
         return str;
     }
 
-    Integer getActivity(){
-        return forks + commits + pullRequests + watches;
+    Integer getActivity(boolean isUser){
+
+        if(isUser){
+            return forks * 5
+                    + commits * 2
+                    + pullRequests * 5
+                    + watches
+                    + issues * 10
+                    + issueComments * 20
+            ;
+
+        }
+        return forks * 10
+                + commits
+                + pullRequests * 2
+                + watches * 7
+                + issues * 2
+                + issueComments * 3
+                ;
     }
 }
