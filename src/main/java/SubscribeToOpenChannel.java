@@ -59,14 +59,14 @@ public class SubscribeToOpenChannel {
 
                                 Actor actor = sample.actor;
                                 if (users.containsKey(actor)) {
-                                    users.put(actor, new DataCount(users.get(repository), 0, 1));
-                                    users2.put(actor, new DataCount(users2.get(repository), 0, 1));
-                                    users3.put(actor, new DataCount(users3.get(repository), 0, 1));
+                                    users.put(actor, new DataCount(users.get(repository), 0, sample.payload.commits.length));
+                                    users2.put(actor, new DataCount(users2.get(repository), 0, sample.payload.commits.length));
+                                    users3.put(actor, new DataCount(users3.get(repository), 0, sample.payload.commits.length));
 
                                 } else {
-                                    users.put(actor, new DataCount(1, 0, 0, 0));
-                                    users3.put(actor, new DataCount(1, 0, 0, 0));
-                                    users2.put(actor, new DataCount(1, 0, 0, 0));
+                                    users.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0));
+                                    users3.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0));
+                                    users2.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0));
                                 }
 
                             }
