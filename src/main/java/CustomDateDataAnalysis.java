@@ -4,6 +4,7 @@ import com.satori.rtm.model.AnyJson;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomDateDataAnalysis {
@@ -14,11 +15,17 @@ public class CustomDateDataAnalysis {
         public static ConcurrentHashMap<Repository, DataCount> repos = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws UnknownHostException {
+        Scanner sc = new Scanner(System.in);
         MongoClient mongoClient = new MongoClient("localhost", 27017);
         DB db = mongoClient.getDB("githubTracking");
         DBCollection dbCollection = db.getCollection("raw");
         BasicDBObject gtQuery = new BasicDBObject();
-        gtQuery.put("date", new BasicDBObject("$gt", "2017/08/01 16:49:00:00" ).append("$lt", "2017/08/01 16:50:03"));
+        String from = sc.nextLine();
+        String to = sc.nextLine();
+        if (to.equals("now")){
+
+        }
+        gtQuery.put("date", new BasicDBObject("$gt", from ).append("$lt", to));
         DBCursor cursor = dbCollection.find(gtQuery);
         while(cursor.hasNext()) {
             BasicDBObject json = (BasicDBObject) cursor.next();
@@ -34,12 +41,12 @@ public class CustomDateDataAnalysis {
                         if (repos.containsKey(repository)) {
                             repos.put(repository, new DataCount(repos.get(repository), 0, payload.commits_length));
                         } else {
-                            repos.put(repository, new DataCount(payload.commits_length, 0, 0, 0));
+                            repos.put(repository, new DataCount(payload.commits_length, 0, 0, 0,0,0));
                         }
                         if (users.containsKey(actor)) {
                             users.put(actor, new DataCount(users.get(repository), 0, payload.commits_length));
                         } else {
-                            users.put(actor, new DataCount(payload.commits_length, 0, 0, 0));
+                            users.put(actor, new DataCount(payload.commits_length, 0, 0, 0,0,0));
                         }
 
                     }
@@ -49,7 +56,7 @@ public class CustomDateDataAnalysis {
                     if (repos.containsKey(repository)) {
                         repos.put(repository, new DataCount( repos.get(repository), 1, 1 ));
                     } else {
-                        repos.put(repository, new DataCount(0, 1, 0, 0));
+                        repos.put(repository, new DataCount(0, 1, 0, 0,0,0));
                     }
                     break;
                 }
@@ -57,7 +64,7 @@ public class CustomDateDataAnalysis {
                     if (repos.containsKey(repository)) {
                         repos.put(repository, new DataCount( repos.get(repository), 2, 1 ));
                     } else {
-                        repos.put(repository, new DataCount(0, 0, 1, 0));
+                        repos.put(repository, new DataCount(0, 0, 1, 0,0,0));
                     }
                     break;
                 }
@@ -76,13 +83,15 @@ public class CustomDateDataAnalysis {
                     if (users.containsKey(actor)) {
                         users.put(actor, new DataCount( users.get(actor), 3, 1) );
                     } else {
-                        users.put(actor, new DataCount(0, 0, 0, 1));
+                        users.put(actor, new DataCount(0, 0, 0, 1,0,0));
                     }
                     break;
                 }
             }
 
         }
+        System.out.println(users);
+        System.out.println(repos);
 
     }
 }
