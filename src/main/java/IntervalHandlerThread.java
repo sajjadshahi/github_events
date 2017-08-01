@@ -43,7 +43,7 @@ public class IntervalHandlerThread extends Thread {
                             Collections.sort(reposList, new Comparator<Map.Entry<Repository, DataCount>>() {
                                 public int compare(Map.Entry<Repository, DataCount> o1,
                                                    Map.Entry<Repository, DataCount> o2) {
-                                    return (o1.getValue().getActivity()).compareTo(o2.getValue().getActivity());
+                                    return (o1.getValue().getActivity(false)).compareTo(o2.getValue().getActivity(false));
                                 }
                             });
                             Collections.reverse(reposList);
@@ -52,7 +52,7 @@ public class IntervalHandlerThread extends Thread {
                             BasicDBList resultRepoList = new BasicDBList();
 //                            BasicDBList reposListJSON = new BasicDBList();
                             for (Map.Entry<Repository, DataCount> o : reposList) {
-                                if (o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity(false) == 0)
                                     continue;
                                 BasicDBObject resultRepoData = new BasicDBObject();
                                 BasicDBObject repoJson = new BasicDBObject();
@@ -65,8 +65,10 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("commits", o.getValue().commits);
                                 activityJson.put("forks", o.getValue().forks);
                                 activityJson.put("pullRequests", o.getValue().pullRequests);
+                                activityJson.put("issues", o.getValue().issues);
+                                activityJson.put("issueComments", o.getValue().issueComments);
                                 activityJson.put("watches", o.getValue().watches);
-                                activityJson.put("total", o.getValue().getActivity());
+                                activityJson.put("total", o.getValue().getActivity(false));
 
                                 resultRepoData.put("repo", repoJson);
                                 resultRepoData.put("activity", activityJson);
@@ -81,14 +83,14 @@ public class IntervalHandlerThread extends Thread {
                             Collections.sort(usersList, new Comparator<Map.Entry<Actor, DataCount>>() {
                                 public int compare(Map.Entry<Actor, DataCount> o1,
                                                    Map.Entry<Actor, DataCount> o2) {
-                                    return (o1.getValue().getActivity()).compareTo(o2.getValue().getActivity());
+                                    return (o1.getValue().getActivity(true)).compareTo(o2.getValue().getActivity(true));
                                 }
                             });
                             Collections.reverse(usersList);
 
                             BasicDBList resultUserList = new BasicDBList();
                             for (Map.Entry<Actor, DataCount> o : usersList) {
-                                if (o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity(true) == 0)
                                     continue;
                                 BasicDBObject resultUserData = new BasicDBObject();
                                 BasicDBObject userJson = new BasicDBObject();
@@ -102,7 +104,9 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("forks", o.getValue().forks);
                                 activityJson.put("pullRequests", o.getValue().pullRequests);
                                 activityJson.put("watches", o.getValue().watches);
-                                activityJson.put("total", o.getValue().getActivity());
+                                activityJson.put("issues", o.getValue().issues);
+                                activityJson.put("issueComments", o.getValue().issueComments);
+                                activityJson.put("total", o.getValue().getActivity(true));
 
                                 resultUserData.put("user", userJson);
                                 resultUserData.put("activity", activityJson);
@@ -155,7 +159,7 @@ public class IntervalHandlerThread extends Thread {
                             Collections.sort(reposList, new Comparator<Map.Entry<Repository, DataCount>>() {
                                 public int compare(Map.Entry<Repository, DataCount> o1,
                                                    Map.Entry<Repository, DataCount> o2) {
-                                    return (o1.getValue().getActivity()).compareTo(o2.getValue().getActivity());
+                                    return (o1.getValue().getActivity(false)).compareTo(o2.getValue().getActivity(false));
                                 }
                             });
                             Collections.reverse(reposList);
@@ -164,7 +168,7 @@ public class IntervalHandlerThread extends Thread {
                             resultRepoList = new BasicDBList();
 //                            BasicDBList reposListJSON = new BasicDBList();
                             for (Map.Entry<Repository, DataCount> o : reposList) {
-                                if (o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity(false) == 0)
                                     continue;
                                 BasicDBObject resultRepoData = new BasicDBObject();
                                 BasicDBObject repoJson = new BasicDBObject();
@@ -177,8 +181,10 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("commits", o.getValue().commits);
                                 activityJson.put("forks", o.getValue().forks);
                                 activityJson.put("pullRequests", o.getValue().pullRequests);
+                                activityJson.put("issues", o.getValue().issues);
+                                activityJson.put("issueComments", o.getValue().issueComments);
                                 activityJson.put("watches", o.getValue().watches);
-                                activityJson.put("total", o.getValue().getActivity());
+                                activityJson.put("total", o.getValue().getActivity(false));
 
                                 resultRepoData.put("repo", repoJson);
                                 resultRepoData.put("activity", activityJson);
@@ -193,14 +199,14 @@ public class IntervalHandlerThread extends Thread {
                             Collections.sort(usersList, new Comparator<Map.Entry<Actor, DataCount>>() {
                                 public int compare(Map.Entry<Actor, DataCount> o1,
                                                    Map.Entry<Actor, DataCount> o2) {
-                                    return (o1.getValue().getActivity()).compareTo(o2.getValue().getActivity());
+                                    return (o1.getValue().getActivity(true)).compareTo(o2.getValue().getActivity(true));
                                 }
                             });
                             Collections.reverse(usersList);
 
                             resultUserList = new BasicDBList();
                             for (Map.Entry<Actor, DataCount> o : usersList) {
-                                if (o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity(true) == 0)
                                     continue;
                                 BasicDBObject resultUserData = new BasicDBObject();
                                 BasicDBObject userJson = new BasicDBObject();
@@ -214,7 +220,9 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("forks", o.getValue().forks);
                                 activityJson.put("pullRequests", o.getValue().pullRequests);
                                 activityJson.put("watches", o.getValue().watches);
-                                activityJson.put("total", o.getValue().getActivity());
+                                activityJson.put("issues", o.getValue().issues);
+                                activityJson.put("issueComments", o.getValue().issueComments);
+                                activityJson.put("total", o.getValue().getActivity(true));
 
                                 resultUserData.put("user", userJson);
                                 resultUserData.put("activity", activityJson);
@@ -269,7 +277,7 @@ public class IntervalHandlerThread extends Thread {
                             Collections.sort(reposList, new Comparator<Map.Entry<Repository, DataCount>>() {
                                 public int compare(Map.Entry<Repository, DataCount> o1,
                                                    Map.Entry<Repository, DataCount> o2) {
-                                    return (o1.getValue().getActivity()).compareTo(o2.getValue().getActivity());
+                                    return (o1.getValue().getActivity(false)).compareTo(o2.getValue().getActivity(false));
                                 }
                             });
                             Collections.reverse(reposList);
@@ -278,7 +286,7 @@ public class IntervalHandlerThread extends Thread {
                             resultRepoList = new BasicDBList();
 //                            BasicDBList reposListJSON = new BasicDBList();
                             for (Map.Entry<Repository, DataCount> o : reposList) {
-                                if (o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity(false) == 0)
                                     continue;
                                 BasicDBObject resultRepoData = new BasicDBObject();
                                 BasicDBObject repoJson = new BasicDBObject();
@@ -292,7 +300,9 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("forks", o.getValue().forks);
                                 activityJson.put("pullRequests", o.getValue().pullRequests);
                                 activityJson.put("watches", o.getValue().watches);
-                                activityJson.put("total", o.getValue().getActivity());
+                                activityJson.put("issues", o.getValue().issues);
+                                activityJson.put("issueComments", o.getValue().issueComments);
+                                activityJson.put("total", o.getValue().getActivity(false));
 
                                 resultRepoData.put("repo", repoJson);
                                 resultRepoData.put("activity", activityJson);
@@ -307,14 +317,14 @@ public class IntervalHandlerThread extends Thread {
                             Collections.sort(usersList, new Comparator<Map.Entry<Actor, DataCount>>() {
                                 public int compare(Map.Entry<Actor, DataCount> o1,
                                                    Map.Entry<Actor, DataCount> o2) {
-                                    return (o1.getValue().getActivity()).compareTo(o2.getValue().getActivity());
+                                    return (o1.getValue().getActivity(true)).compareTo(o2.getValue().getActivity(true));
                                 }
                             });
                             Collections.reverse(usersList);
 
                             resultUserList = new BasicDBList();
                             for (Map.Entry<Actor, DataCount> o : usersList) {
-                                if (o.getValue().getActivity() == 0)
+                                if (o.getValue().getActivity(true) == 0)
                                     continue;
                                 BasicDBObject resultUserData = new BasicDBObject();
                                 BasicDBObject userJson = new BasicDBObject();
@@ -328,7 +338,10 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("forks", o.getValue().forks);
                                 activityJson.put("pullRequests", o.getValue().pullRequests);
                                 activityJson.put("watches", o.getValue().watches);
-                                activityJson.put("total", o.getValue().getActivity());
+                                activityJson.put("issues", o.getValue().issues);
+                                activityJson.put("issueComments", o.getValue().issueComments);
+                                activityJson.put("watches", o.getValue().watches);
+                                activityJson.put("total", o.getValue().getActivity(true));
 
                                 resultUserData.put("user", userJson);
                                 resultUserData.put("activity", activityJson);

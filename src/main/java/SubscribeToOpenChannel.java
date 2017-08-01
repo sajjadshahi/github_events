@@ -66,21 +66,21 @@ public class SubscribeToOpenChannel {
                                     repos2.put(repository, new DataCount(repos2.get(repository), 0, sample.payload.commits.length));
                                     repos3.put(repository, new DataCount(repos3.get(repository), 0, sample.payload.commits.length));
                                 } else {
-                                    repos.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0));
-                                    repos2.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0));
-                                    repos3.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0));
+                                    repos.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
+                                    repos2.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
+                                    repos3.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
                                 }
 
                                 Actor actor = sample.actor;
                                 if (users.containsKey(actor)) {
-                                    users.put(actor, new DataCount(users.get(repository), 0, sample.payload.commits.length));
-                                    users2.put(actor, new DataCount(users2.get(repository), 0, sample.payload.commits.length));
-                                    users3.put(actor, new DataCount(users3.get(repository), 0, sample.payload.commits.length));
+                                    users.put(actor, new DataCount(users.get(actor), 0, sample.payload.commits.length));
+                                    users2.put(actor, new DataCount(users2.get(actor), 0, sample.payload.commits.length));
+                                    users3.put(actor, new DataCount(users3.get(actor), 0, sample.payload.commits.length));
 
                                 } else {
-                                    users.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0));
-                                    users3.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0));
-                                    users2.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0));
+                                    users.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
+                                    users3.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
+                                    users2.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
                                 }
 
                             }
@@ -94,9 +94,9 @@ public class SubscribeToOpenChannel {
                                 repos3.put(repository, new DataCount( repos3.get(repository), 1, 1 ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
-                                repos.put(repository, new DataCount(0, 1, 0, 0));
-                                repos2.put(repository, new DataCount(0, 1, 0, 0));
-                                repos3.put(repository, new DataCount(0, 1, 0, 0));
+                                repos.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
+                                repos2.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
+                                repos3.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
                             }
                             break;
                         }
@@ -108,12 +108,42 @@ public class SubscribeToOpenChannel {
                                 repos3.put(repository, new DataCount( repos3.get(repository), 2, 1 ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
-                                repos.put(repository, new DataCount(0, 0, 1, 0));
-                                repos2.put(repository, new DataCount(0, 0, 1, 0));
-                                repos3.put(repository, new DataCount(0, 0, 1, 0));
+                                repos.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
+                                repos2.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
+                                repos3.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
                             }
                             break;
                         }
+                        case "IssueCommentEvent": {
+                            Actor actor = sample.actor;
+                            if (users.containsKey(actor)) {
+                                users.put(actor, new DataCount(users.get(actor), 5, sample.payload.commits.length));
+                                users2.put(actor, new DataCount(users2.get(actor), 5, sample.payload.commits.length));
+                                users3.put(actor, new DataCount(users3.get(actor), 5, sample.payload.commits.length));
+
+                            } else {
+                                users.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
+                                users3.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
+                                users2.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
+                            }
+                            break;
+                        }
+
+                        case "IssuesEvent": {
+                            Actor actor = sample.actor;
+                            if (users.containsKey(actor)) {
+                                users.put(actor, new DataCount(users.get(actor), 4, sample.payload.commits.length));
+                                users2.put(actor, new DataCount(users2.get(actor), 4, sample.payload.commits.length));
+                                users3.put(actor, new DataCount(users3.get(actor), 4, sample.payload.commits.length));
+
+                            } else {
+                                users.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
+                                users3.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
+                                users2.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
+                            }
+                            break;
+                        }
+
                         case "PullRequestEvent": {
                             String lng = sample.payload.pull_request.head.repo.language;
                             if (lng != null)
@@ -145,9 +175,9 @@ public class SubscribeToOpenChannel {
                                 users2.put(actor, new DataCount( users2.get(actor), 3, 1) );
                                 users3.put(actor, new DataCount( users3.get(actor), 3, 1) );
                             } else {
-                                users.put(actor, new DataCount(0, 0, 0, 1));
-                                users2.put(actor, new DataCount(0, 0, 0, 1));
-                                users3.put(actor, new DataCount(0, 0, 0, 1));
+                                users.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
+                                users2.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
+                                users3.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
                             }
                             break;
                         }
