@@ -28,6 +28,7 @@ public class IntervalHandlerThread extends Thread {
         try {
             MongoClient mongoClient = new MongoClient("localhost", 27017);
             DB db = mongoClient.getDB("githubTracking");
+            
             while (true) {
 
                 try {
