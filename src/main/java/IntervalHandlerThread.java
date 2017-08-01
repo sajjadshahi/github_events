@@ -1,4 +1,8 @@
 import javax.xml.crypto.Data;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
@@ -60,6 +64,8 @@ public class IntervalHandlerThread extends Thread {
 
                         Set <Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();
                         List <Map.Entry<Repository, DataCount>> reposList =  new ArrayList<>(reposSet);
+                        SubscribeToOpenChannel.repos.clear();
+
                         Collections.sort(reposList, new Comparator<Map.Entry<Repository, DataCount>>() {
                             public int compare(Map.Entry<Repository, DataCount> o1,
                                                Map.Entry<Repository, DataCount> o2) {
@@ -73,6 +79,8 @@ public class IntervalHandlerThread extends Thread {
                         System.out.println("------ TOP USERS : ");
                         Set <Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users.entrySet();
                         List <Map.Entry<Actor, DataCount>> usersList =  new ArrayList<>(usersSet);
+                        SubscribeToOpenChannel.users.clear();
+
                         Collections.sort(usersList, new Comparator<Map.Entry<Actor, DataCount>>() {
                             public int compare(Map.Entry<Actor, DataCount> o1,
                                                Map.Entry<Actor, DataCount> o2) {
@@ -95,6 +103,33 @@ public class IntervalHandlerThread extends Thread {
                         });
                         Collections.reverse(languageCountPairs);
                         System.out.println(languageCountPairs);
+
+                        //Storing to file
+                        String dir = "Data/1/";
+                        File f = new File(dir);
+                        f.mkdirs();
+
+                        f = new File(dir + "repos.txt");
+                        f.createNewFile();
+                        FileOutputStream fos = new FileOutputStream(f);
+                        PrintWriter pw = new PrintWriter( fos, true);
+
+                        for (Map.Entry<Repository, DataCount> o: reposList) {
+                            pw.println(o.getKey().name + " : " + o.getValue().toString());
+                        }
+                        pw.close();
+
+
+                        f = new File(dir + "users.txt");
+                        f.createNewFile();
+                        FileOutputStream fos2 = new FileOutputStream(f);
+                        PrintWriter pw2 = new PrintWriter( fos, true);
+                        for (Map.Entry<Actor, DataCount> o: usersList) {
+                            pw.println(o.getKey().login + " : " + o.getValue().toString());
+                        }
+                        pw.close();
+
+
                         break;
 
                     case HOUR:
@@ -108,6 +143,8 @@ public class IntervalHandlerThread extends Thread {
 
             } catch (InterruptedException e){
                 //
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
