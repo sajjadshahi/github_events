@@ -39,6 +39,8 @@ public class IntervalHandlerThread extends Thread {
                             DBCollection dbCollection = db.getCollection("results");
                             Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();
                             List<Map.Entry<Repository, DataCount>> reposList = new ArrayList<>(reposSet);
+                            SubscribeToOpenChannel.repos.clear();
+
                             Collections.sort(reposList, new Comparator<Map.Entry<Repository, DataCount>>() {
                                 public int compare(Map.Entry<Repository, DataCount> o1,
                                                    Map.Entry<Repository, DataCount> o2) {
@@ -46,12 +48,16 @@ public class IntervalHandlerThread extends Thread {
                                 }
                             });
                             Collections.reverse(reposList);
-                            BasicDBObject result = new BasicDBObject();
-                            BasicDBList resultList = new BasicDBList();
-                            BasicDBList reposListJSON = new BasicDBList();
+
+                            BasicDBObject resultRepo = new BasicDBObject();
+                            BasicDBList resultRepoList = new BasicDBList();
+//                            BasicDBList reposListJSON = new BasicDBList();
                             for (Map.Entry<Repository, DataCount> o : reposList) {
+                                if(o.getValue().getActivity() == 0)
+                                    continue;
+
                                 System.out.println(o.getKey().name + " : " + o.getValue().toString());
-                                BasicDBObject resultData = new BasicDBObject();
+                                BasicDBObject resultRepoData = new BasicDBObject();
                                 BasicDBObject repoJson = new BasicDBObject();
                                 BasicDBObject activityJson = new BasicDBObject();
 
@@ -65,20 +71,24 @@ public class IntervalHandlerThread extends Thread {
                                 activityJson.put("watches", o.getValue().watches);
                                 activityJson.put("total", o.getValue().getActivity());
 
-                                resultData.put("repo", repoJson);
-                                resultData.put("activity", activityJson);
+                                resultRepoData.put("repo", repoJson);
+                                resultRepoData.put("activity", activityJson);
 
-                                resultList.add(resultData);
+                                resultRepoList.add(resultRepoData);
 
                             }
-                            result.put("topRepos", resultList);
-                            result.put("type", "tenMin");
+
+                            resultRepo.put("topRepos", resultRepoList);
+                            resultRepo.put("type", "tenMin");
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-                            result.put("time", sdf.format(new Date()));
-                            dbCollection.insert(result);
+                            resultRepo.put("time", sdf.format(new Date()));
+//                            dbCollection.insert(resultRepo);
+
                             System.out.println("------ TOP USERS : ");
                             Set<Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users.entrySet();
                             List<Map.Entry<Actor, DataCount>> usersList = new ArrayList<>(usersSet);
+                            SubscribeToOpenChannel.users.clear();
+
                             Collections.sort(usersList, new Comparator<Map.Entry<Actor, DataCount>>() {
                                 public int compare(Map.Entry<Actor, DataCount> o1,
                                                    Map.Entry<Actor, DataCount> o2) {
@@ -100,6 +110,42 @@ public class IntervalHandlerThread extends Thread {
                                 }
                             });
                             Collections.reverse(languageCountPairs);
+
+                            BasicDBObject resultUser = new BasicDBObject();
+                            BasicDBList resultUserList = new BasicDBList();
+//                            BasicDBList reposListJSON = new BasicDBList();
+                            for (Map.Entry<Actor, DataCount> o : usersList) {
+                                if(o.getValue().getActivity() == 0)
+                                    continue;
+
+                                System.out.println(o.getKey().login + " : " + o.getValue().toString());
+                                BasicDBObject resultUserData = new BasicDBObject();
+                                BasicDBObject userJson = new BasicDBObject();
+                                BasicDBObject activityJson = new BasicDBObject();
+
+                                userJson.put("name", o.getKey().login);
+                                userJson.put("id", o.getKey().id);
+                                userJson.put("url", o.getKey().url);
+
+                                activityJson.put("commits", o.getValue().commits);
+                                activityJson.put("forks", o.getValue().forks);
+                                activityJson.put("pullRequests", o.getValue().pullRequests);
+                                activityJson.put("watches", o.getValue().watches);
+                                activityJson.put("total", o.getValue().getActivity());
+
+                                resultUserData.put("user", userJson);
+                                resultUserData.put("activity", activityJson);
+
+                                resultUserList.add(resultUserData);
+
+                            }
+
+                            resultRepo.put("topUsers", resultUserList);
+//                            resultUser.put("type", "tenMin");
+//                            resultUser.put("time", sdf.format(new Date()));
+                            dbCollection.insert(resultRepo);
+
+
                             System.out.println(languageCountPairs);
                             break;
 
