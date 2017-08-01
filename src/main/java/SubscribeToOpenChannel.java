@@ -48,25 +48,25 @@ public class SubscribeToOpenChannel {
                             Repository repository = sample.repo;
                             if (sample.payload.size > 0) {
                                 if (repos.containsKey(repository)) {
-                                    repos.put(repository, new DataCount(repos.get(repository), 0, sample.payload.size));
-                                    repos2.put(repository, new DataCount(repos2.get(repository), 0, sample.payload.size));
-                                    repos3.put(repository, new DataCount(repos3.get(repository), 0, sample.payload.size));
+                                    repos.put(repository, new DataCount(repos.get(repository), 0, sample.payload.commits.length));
+                                    repos2.put(repository, new DataCount(repos2.get(repository), 0, sample.payload.commits.length));
+                                    repos3.put(repository, new DataCount(repos3.get(repository), 0, sample.payload.commits.length));
                                 } else {
-                                    repos.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
-                                    repos2.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
-                                    repos3.put(repository, new DataCount(sample.payload.size, 0, 0, 0));
+                                    repos.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0));
+                                    repos2.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0));
+                                    repos3.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0));
                                 }
 
                                 Actor actor = sample.actor;
                                 if (users.containsKey(actor)) {
-                                    users.put(actor, new DataCount(users.get(repository), 0, sample.payload.size));
-                                    users2.put(actor, new DataCount(users2.get(repository), 0, sample.payload.size));
-                                    users3.put(actor, new DataCount(users3.get(repository), 0, sample.payload.size));
+                                    users.put(actor, new DataCount(users.get(repository), 0, 1));
+                                    users2.put(actor, new DataCount(users2.get(repository), 0, 1));
+                                    users3.put(actor, new DataCount(users3.get(repository), 0, 1));
 
                                 } else {
-                                    users.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
-                                    users3.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
-                                    users2.put(actor, new DataCount(sample.payload.size, 0, 0, 0));
+                                    users.put(actor, new DataCount(1, 0, 0, 0));
+                                    users3.put(actor, new DataCount(1, 0, 0, 0));
+                                    users2.put(actor, new DataCount(1, 0, 0, 0));
                                 }
 
                             }
@@ -75,9 +75,9 @@ public class SubscribeToOpenChannel {
                         case "ForkEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, new DataCount( repos.get(repository), 1, sample.payload.size ));
-                                repos2.put(repository, new DataCount( repos2.get(repository), 1, sample.payload.size ));
-                                repos3.put(repository, new DataCount( repos3.get(repository), 1, sample.payload.size ));
+                                repos.put(repository, new DataCount( repos.get(repository), 1, 1 ));
+                                repos2.put(repository, new DataCount( repos2.get(repository), 1, 1 ));
+                                repos3.put(repository, new DataCount( repos3.get(repository), 1, 1 ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, new DataCount(0, 1, 0, 0));
@@ -89,9 +89,9 @@ public class SubscribeToOpenChannel {
                         case "WatchEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, new DataCount( repos.get(repository), 2, sample.payload.size ));
-                                repos2.put(repository, new DataCount( repos2.get(repository), 2, sample.payload.size ));
-                                repos3.put(repository, new DataCount( repos3.get(repository), 2, sample.payload.size ));
+                                repos.put(repository, new DataCount( repos.get(repository), 2, 1 ));
+                                repos2.put(repository, new DataCount( repos2.get(repository), 2, 1 ));
+                                repos3.put(repository, new DataCount( repos3.get(repository), 2, 1 ));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, new DataCount(0, 0, 1, 0));
