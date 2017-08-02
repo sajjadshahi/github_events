@@ -1,11 +1,15 @@
-# Java SDK Quickstart
+# Nimbo First Project : Github Data Analysis
 
-Satori is a cloud-based, live data ecosystem for filtering, and building apps on top of any schema-less real-time live data.
+This Project Uses MongoDB to Store Data and Information.
+All Raw Data is Also Being Stored!
 
-This tutorial uses Java SDK for Satori RTM to create a simple command-line publish-subscribe app.
+One Mechanism to Get Data Analysis is That While Running we Store Processed Data in 3 Different Intervals:
+10 minutes
+1 hour
+1 day
 
-Use the following Apache Maven command to run an app:
+If You Were Eager to Get Data Analysis for a Specific Time Interval, it is Also Possible!
+Just Pass your Dates as:
 
-```
-mvn clean compile exec:java -Dexec.mainClass="com.mycompany.Program"
-```
+"yyyy/MM/dd HH:mm:ss.SSS"
+
