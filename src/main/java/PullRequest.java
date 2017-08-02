@@ -7,4 +7,7 @@ class PullRequest{
     public PullRequest(BasicDBObject json) {
         this.head = new Head((BasicDBObject) json.get("head"));
     }
+    public PullRequest(){
+
+    }
 }

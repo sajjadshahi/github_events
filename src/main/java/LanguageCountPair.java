@@ -7,6 +7,10 @@ public class LanguageCountPair {
         this.count = new Integer(count);
     }
 
+    public LanguageCountPair(){
+
+    }
+
     @Override
     public String toString() {
         return lng + " : " + count;

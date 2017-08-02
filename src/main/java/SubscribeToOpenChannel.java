@@ -28,6 +28,7 @@ public class SubscribeToOpenChannel {
     public static ConcurrentHashMap<Repository, DataCount> repos = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Repository, DataCount> repos2 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Repository, DataCount> repos3 = new ConcurrentHashMap<>();
+    public static int i = 1;
 
     public static void main(String[] args) throws InterruptedException, UnknownHostException {
 
@@ -48,13 +49,12 @@ public class SubscribeToOpenChannel {
             public void onSubscriptionData(SubscriptionData data) {
                 long time = System.nanoTime();
                 for (AnyJson json : data.getMessages()) {
-                    BasicDBObject dbo = new BasicDBObject();
 
+//                    System.out.println(i++);
+/*BasicDBObject dbo = new BasicDBObject();
                     dbo.put("rawData", (DBObject) JSON.parse(json.toString()));
                     dbo.put("date", sdf.format(new Date()));
-
-                    dbCollection.insert(dbo);
-
+                    dbCollection.insert(dbo);*/
                     GithubData sample = json.convertToType(GithubData.class);
                     String type = sample.type;
                     switch (type) {
@@ -89,9 +89,9 @@ public class SubscribeToOpenChannel {
                         case "ForkEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, new DataCount( repos.get(repository), 1, 1 ));
-                                repos2.put(repository, new DataCount( repos2.get(repository), 1, 1 ));
-                                repos3.put(repository, new DataCount( repos3.get(repository), 1, 1 ));
+                                repos.put(repository, new DataCount(repos.get(repository), 1, 1));
+                                repos2.put(repository, new DataCount(repos2.get(repository), 1, 1));
+                                repos3.put(repository, new DataCount(repos3.get(repository), 1, 1));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
@@ -103,9 +103,9 @@ public class SubscribeToOpenChannel {
                         case "WatchEvent": {
                             Repository repository = sample.repo;
                             if (repos.containsKey(repository)) {
-                                repos.put(repository, new DataCount( repos.get(repository), 2, 1 ));
-                                repos2.put(repository, new DataCount( repos2.get(repository), 2, 1 ));
-                                repos3.put(repository, new DataCount( repos3.get(repository), 2, 1 ));
+                                repos.put(repository, new DataCount(repos.get(repository), 2, 1));
+                                repos2.put(repository, new DataCount(repos2.get(repository), 2, 1));
+                                repos3.put(repository, new DataCount(repos3.get(repository), 2, 1));
 //                                System.out.println("repo : " + repository.name + " | " + repos.get(repository));
                             } else {
                                 repos.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
@@ -155,25 +155,25 @@ public class SubscribeToOpenChannel {
                                     languagesTrie3.increment(lng);
                                 }
 
-                                if (languagesTrie.search(lng)) {
-                                    languagesTrie.increment(lng);
-                                } else {
-                                    languagesTrie.insert(lng);
-                                    languagesTrie.increment(lng);
-                                }
+                            if (languagesTrie.search(lng)) {
+                                languagesTrie.increment(lng);
+                            } else {
+                                languagesTrie.insert(lng);
+                                languagesTrie.increment(lng);
+                            }
 
-                                if (languagesTrie2.search(lng)) {
-                                    languagesTrie2.increment(lng);
-                                } else {
-                                    languagesTrie2.insert(lng);
-                                    languagesTrie2.increment(lng);
-                                }
+                            if (languagesTrie2.search(lng)) {
+                                languagesTrie2.increment(lng);
+                            } else {
+                                languagesTrie2.insert(lng);
+                                languagesTrie2.increment(lng);
+                            }
 
                             Actor actor = sample.actor;
                             if (users.containsKey(actor)) {
-                                users.put(actor, new DataCount( users.get(actor), 3, 1) );
-                                users2.put(actor, new DataCount( users2.get(actor), 3, 1) );
-                                users3.put(actor, new DataCount( users3.get(actor), 3, 1) );
+                                users.put(actor, new DataCount(users.get(actor), 3, 1));
+                                users2.put(actor, new DataCount(users2.get(actor), 3, 1));
+                                users3.put(actor, new DataCount(users3.get(actor), 3, 1));
                             } else {
                                 users.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
                                 users2.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
@@ -188,8 +188,8 @@ public class SubscribeToOpenChannel {
         };
         client.createSubscription(channel, SubscriptionMode.SIMPLE, listener);
         client.start();
-       new IntervalHandlerThread(IntervalHandlerThread.TimeMode.TENMIN).start();
-       new IntervalHandlerThread(IntervalHandlerThread.TimeMode.HOUR).start();
-       new IntervalHandlerThread(IntervalHandlerThread.TimeMode.DAY).start();
+        new IntervalHandlerThread(IntervalHandlerThread.TimeMode.TENMIN).start();
+        new IntervalHandlerThread(IntervalHandlerThread.TimeMode.HOUR).start();
+        new IntervalHandlerThread(IntervalHandlerThread.TimeMode.DAY).start();
     }
 }

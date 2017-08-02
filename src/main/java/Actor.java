@@ -9,6 +9,8 @@ class Actor implements Comparable {
         this.id = Integer.parseInt(json.getString("id"));
         this.login = json.getString("login");
         this.url = json.getString("url");
+    }
+    public Actor() {
 
     }
 

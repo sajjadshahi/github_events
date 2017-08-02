@@ -34,7 +34,7 @@ public class IntervalHandlerThread extends Thread {
                 try {
                     switch (timeMode) {
                         case TENMIN:
-                            Thread.sleep(600000);
+                            Thread.sleep(6000);
                             System.out.println("Start : 10 Min Analysis");
                             DBCollection dbCollection = db.getCollection("results");
                             Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();

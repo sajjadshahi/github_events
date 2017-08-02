@@ -11,7 +11,9 @@ public class Repository implements Comparable {
         this.name = json.getString("name");
         this.url = json.getString("url");
     }
+    public Repository(){
 
+    }
     public String toString(){
         return "Repo: " + id + "\nName : " + name + " | url : " + url;
     }

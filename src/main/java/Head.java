@@ -9,4 +9,7 @@ class Head {
     public Head(BasicDBObject json) {
         this.repo = new Repo((BasicDBObject) json.get("repo"));
     }
+    public Head(){
+
+    }
 }
