@@ -122,7 +122,7 @@ public class CustomDateDataAnalysis {
         mainDocument.put("topUsers", resultUserList);
         mainDocument.put("topLanguages", languagesList);
         mainDocument.put("topRepos", resultRepoList);
-        mainDocument.put("type", "tenMin");
+        mainDocument.put("type", "customDate");
         mainDocument.put("from", from);
         mainDocument.put("to", to);
         dbCollection.insert(mainDocument);
@@ -133,14 +133,17 @@ public class CustomDateDataAnalysis {
     public static void main(String[] args) throws UnknownHostException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         Scanner sc = new Scanner(System.in);
+        System.out.println("Enter 'From Date'\nThe Acceptable Format is:\nyyyy/MM/dd HH:mm:ss.SSS\nPlease Enter Month & Day with 2 Digits!");
         MongoClient mongoClient = new MongoClient("localhost", 27017);
         DB db = mongoClient.getDB("githubTracking");
         DBCollection dbCollection = db.getCollection("raw");
         BasicDBObject gtQuery = new BasicDBObject();
         String from = sc.nextLine();
+        System.out.println("Enter 'To Date'\nThe Acceptable Format is:\nyyyy/MM/dd HH:mm:ss.SSS\nPlease Enter Month & Day with 2 Digits!\nEnter 'now' To get Analyzed Data Until Now!");
         String to = sc.nextLine();
         if (to.equals("now")) {
-
+            to = sdf.format(new Date());
+            System.out.println("Now is : " + to + "\n");
         }
         gtQuery.put("date", new BasicDBObject("$gt", from).append("$lt", to));
         DBCursor cursor = dbCollection.find(gtQuery);

@@ -34,7 +34,8 @@ public class IntervalHandlerThread extends Thread {
                 try {
                     switch (timeMode) {
                         case TENMIN:
-                            Thread.sleep(60000);
+                            Thread.sleep(600000);
+                            System.out.println("Start : 10 Min Analysis");
                             DBCollection dbCollection = db.getCollection("results");
                             Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();
                             List<Map.Entry<Repository, DataCount>> reposList = new ArrayList<>(reposSet);
@@ -150,7 +151,8 @@ public class IntervalHandlerThread extends Thread {
 
 
                         case HOUR:
-                            Thread.sleep(360000);
+                            Thread.sleep(600000*6);
+                            System.out.println("Start : 1 Hour Analysis");
                             dbCollection = db.getCollection("results");
                             reposSet = SubscribeToOpenChannel.repos2.entrySet();
                             reposList = new ArrayList<>(reposSet);
@@ -268,7 +270,8 @@ public class IntervalHandlerThread extends Thread {
 
 
                         case DAY:
-                            Thread.sleep(8640000);
+                            Thread.sleep(600000*6*12);
+                            System.out.println("Start : 1 Day Analysis");
                             dbCollection = db.getCollection("results");
                             reposSet = SubscribeToOpenChannel.repos3.entrySet();
                             reposList = new ArrayList<>(reposSet);
@@ -379,7 +382,7 @@ public class IntervalHandlerThread extends Thread {
                             mainDocument.put("type", "oneDay");
                             mainDocument.put("time", sdf.format(new Date()));
                             dbCollection.insert(mainDocument);
-                            System.out.println("1 Hour Analysis Done !");
+                            System.out.println("1 Day Analysis Done !");
 
                             break;
                     }
