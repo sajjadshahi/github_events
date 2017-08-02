@@ -261,7 +261,9 @@ public class SubscribeToOpenChannel {
                                 if (trie.search(lng)) {
                                     trie.increment(lng);
                                 } else {
-                                    languages.add(lng);
+                                    if (languages.indexOf(lng) < 0)
+                                        languages.add(lng);
+
                                     trie.insert(lng);
                                     trie.increment(lng);
                                 }
