@@ -59,6 +59,7 @@ public class IntervalHandlerThread extends Thread {
                             break;
                     }
 
+                    SubscribeToOpenChannel.semaphore.acquire();
 
                     reposSet = SubscribeToOpenChannel.repos.get(val).entrySet();
                     reposList = new ArrayList<>(reposSet);
@@ -67,6 +68,8 @@ public class IntervalHandlerThread extends Thread {
                     usersSet = SubscribeToOpenChannel.users.get(val).entrySet();
                     usersList = new ArrayList<>(usersSet);
                     SubscribeToOpenChannel.users.get(val).clear();
+
+                    SubscribeToOpenChannel.semaphore.release();
 
                     DBCollection dbCollection = db.getCollection("results");
 
