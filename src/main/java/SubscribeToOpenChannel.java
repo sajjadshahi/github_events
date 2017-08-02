@@ -51,10 +51,10 @@ public class SubscribeToOpenChannel {
                 for (AnyJson json : data.getMessages()) {
 
 //                    System.out.println(i++);
-/*BasicDBObject dbo = new BasicDBObject();
+                    BasicDBObject dbo = new BasicDBObject();
                     dbo.put("rawData", (DBObject) JSON.parse(json.toString()));
                     dbo.put("date", sdf.format(new Date()));
-                    dbCollection.insert(dbo);*/
+                    dbCollection.insert(dbo);
                     GithubData sample = json.convertToType(GithubData.class);
                     String type = sample.type;
                     switch (type) {
