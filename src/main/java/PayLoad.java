@@ -21,6 +21,7 @@ class PayLoad{
     }
 
     public PayLoad(BasicDBObject json, boolean b) {
+        this.size = json.getInt("size");
         List<Commit> commitList = (List<Commit>)  json.get("commits");
         this.commits_length = commitList.toArray().length;
     }
