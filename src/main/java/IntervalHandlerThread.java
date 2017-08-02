@@ -37,9 +37,9 @@ public class IntervalHandlerThread extends Thread {
                             Thread.sleep(60000);
                             System.out.println("Start : 10 Min Analysis");
                             DBCollection dbCollection = db.getCollection("results");
-                            Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos.entrySet();
+                            Set<Map.Entry<Repository, DataCount>> reposSet = SubscribeToOpenChannel.repos1.entrySet();
                             List<Map.Entry<Repository, DataCount>> reposList = new ArrayList<>(reposSet);
-                            SubscribeToOpenChannel.repos.clear();
+                            SubscribeToOpenChannel.repos1.clear();
 
                             Collections.sort(reposList, new Comparator<Map.Entry<Repository, DataCount>>() {
                                 public int compare(Map.Entry<Repository, DataCount> o1,
@@ -77,9 +77,9 @@ public class IntervalHandlerThread extends Thread {
                                 resultRepoList.add(resultRepoData);
 
                             }
-                            Set<Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users.entrySet();
+                            Set<Map.Entry<Actor, DataCount>> usersSet = SubscribeToOpenChannel.users1.entrySet();
                             List<Map.Entry<Actor, DataCount>> usersList = new ArrayList<>(usersSet);
-                            SubscribeToOpenChannel.users.clear();
+                            SubscribeToOpenChannel.users1.clear();
 
                             Collections.sort(usersList, new Comparator<Map.Entry<Actor, DataCount>>() {
                                 public int compare(Map.Entry<Actor, DataCount> o1,
@@ -117,11 +117,11 @@ public class IntervalHandlerThread extends Thread {
                             }
                             ArrayList<LanguageCountPair> languageCountPairs = new ArrayList<>();
                             for (String s : SubscribeToOpenChannel.languages) {
-                                int occr = SubscribeToOpenChannel.languagesTrie.getOccurences(s);
+                                int occr = SubscribeToOpenChannel.languagesTrie1.getOccurences(s);
                                 if (occr > 0)
                                     languageCountPairs.add(new LanguageCountPair(s, occr));
                             }
-                            SubscribeToOpenChannel.languagesTrie = new Trie();
+                            SubscribeToOpenChannel.languagesTrie1 = new Trie();
                             Collections.sort(languageCountPairs, new Comparator<LanguageCountPair>() {
                                 @Override
                                 public int compare(LanguageCountPair o1, LanguageCountPair o2) {
