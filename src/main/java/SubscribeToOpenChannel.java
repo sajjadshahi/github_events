@@ -32,7 +32,7 @@ public class SubscribeToOpenChannel {
     public static ConcurrentHashMap<Actor, DataCount> users1 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Actor, DataCount> users2 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Actor, DataCount> users3 = new ConcurrentHashMap<>();
-    public static List< ConcurrentHashMap<Actor, DataCount> > users = new ArrayList<>();
+    public static List<ConcurrentHashMap<Actor, DataCount>> users = new ArrayList<>();
 
     static {
         users.add(users1);
@@ -41,11 +41,10 @@ public class SubscribeToOpenChannel {
     }
 
 
-
     public static ConcurrentHashMap<Repository, DataCount> repos1 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Repository, DataCount> repos2 = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<Repository, DataCount> repos3 = new ConcurrentHashMap<>();
-    public static List< ConcurrentHashMap<Repository, DataCount> > repos = new ArrayList<>();
+    public static List<ConcurrentHashMap<Repository, DataCount>> repos = new ArrayList<>();
 
     static {
         repos.add(repos1);
@@ -94,36 +93,16 @@ public class SubscribeToOpenChannel {
                                         repo.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
                                     }
                                 }
-//                                if (repos1.containsKey(repository)) {
-//                                    repos1.put(repository, new DataCount(repos1.get(repository), 0, sample.payload.commits.length));
-//                                    repos2.put(repository, new DataCount(repos2.get(repository), 0, sample.payload.commits.length));
-//                                    repos3.put(repository, new DataCount(repos3.get(repository), 0, sample.payload.commits.length));
-//                                } else {
-//                                    repos1.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
-//                                    repos2.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
-//                                    repos3.put(repository, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
-//                                }
 
                                 Actor actor = sample.actor;
 
-                                for(ConcurrentHashMap<Actor, DataCount> user: users) {
+                                for (ConcurrentHashMap<Actor, DataCount> user : users) {
                                     if (user.containsKey(actor)) {
                                         user.put(actor, new DataCount(user.get(actor), 0, sample.payload.commits.length));
-                                    }else{
+                                    } else {
                                         user.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
                                     }
                                 }
-
-//                                if (users1.containsKey(actor)) {
-//                                    users1.put(actor, new DataCount(users1.get(actor), 0, sample.payload.commits.length));
-//                                    users2.put(actor, new DataCount(users2.get(actor), 0, sample.payload.commits.length));
-//                                    users3.put(actor, new DataCount(users3.get(actor), 0, sample.payload.commits.length));
-//
-//                                } else {
-//                                    users1.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
-//                                    users3.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
-//                                    users2.put(actor, new DataCount(sample.payload.commits.length, 0, 0, 0, 0, 0));
-//                                }
 
                             }
                             break;
@@ -138,23 +117,13 @@ public class SubscribeToOpenChannel {
                                 }
                             }
 
-//                            if (repos1.containsKey(repository)) {
-//                                repos1.put(repository, new DataCount(repos1.get(repository), 1, 1));
-//                                repos2.put(repository, new DataCount(repos2.get(repository), 1, 1));
-//                                repos3.put(repository, new DataCount(repos3.get(repository), 1, 1));
-////                                System.out.println("repo : " + repository.name + " | " + repos1.get(repository));
-//                            } else {
-//                                repos1.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
-//                                repos2.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
-//                                repos3.put(repository, new DataCount(0, 1, 0, 0, 0, 0));
-//                            }
 
                             Actor actor = sample.actor;
 
-                            for(ConcurrentHashMap<Actor, DataCount> user: users) {
+                            for (ConcurrentHashMap<Actor, DataCount> user : users) {
                                 if (user.containsKey(actor)) {
                                     user.put(actor, new DataCount(user.get(actor), 1, 1));
-                                }else{
+                                } else {
                                     user.put(actor, new DataCount(0, 1, 0, 0, 0, 0));
                                 }
                             }
@@ -170,18 +139,6 @@ public class SubscribeToOpenChannel {
                                     repo.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
                                 }
                             }
-
-//                            Repository repository = sample.repo;
-//                            if (repos1.containsKey(repository)) {
-//                                repos1.put(repository, new DataCount(repos1.get(repository), 2, 1));
-//                                repos2.put(repository, new DataCount(repos2.get(repository), 2, 1));
-//                                repos3.put(repository, new DataCount(repos3.get(repository), 2, 1));
-////                                System.out.println("repo : " + repository.name + " | " + repos1.get(repository));
-//                            } else {
-//                                repos1.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
-//                                repos2.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
-//                                repos3.put(repository, new DataCount(0, 0, 1, 0, 0, 0));
-//                            }
                             break;
                         }
                         case "IssueCommentEvent": {
@@ -197,25 +154,14 @@ public class SubscribeToOpenChannel {
 
                             Actor actor = sample.actor;
 
-                            for(ConcurrentHashMap<Actor, DataCount> user: users) {
+                            for (ConcurrentHashMap<Actor, DataCount> user : users) {
                                 if (user.containsKey(actor)) {
                                     user.put(actor, new DataCount(user.get(actor), 5, 1));
-                                }else{
+                                } else {
                                     user.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
                                 }
                             }
 
-//                            Actor actor = sample.actor;
-//                            if (users1.containsKey(actor)) {
-//                                users1.put(actor, new DataCount(users1.get(actor), 5, 1));
-//                                users2.put(actor, new DataCount(users2.get(actor), 5, 1));
-//                                users3.put(actor, new DataCount(users3.get(actor), 5, 1));
-//
-//                            } else {
-//                                users1.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
-//                                users3.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
-//                                users2.put(actor, new DataCount(0, 0, 0, 0, 0, 1));
-//                            }
                             break;
                         }
 
@@ -232,87 +178,39 @@ public class SubscribeToOpenChannel {
 
                             Actor actor = sample.actor;
 
-                            for(ConcurrentHashMap<Actor, DataCount> user: users) {
+                            for (ConcurrentHashMap<Actor, DataCount> user : users) {
                                 if (user.containsKey(actor)) {
                                     user.put(actor, new DataCount(user.get(actor), 4, 1));
-                                }else{
+                                } else {
                                     user.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
                                 }
                             }
-
-//                            Actor actor = sample.actor;
-//                            if (users1.containsKey(actor)) {
-//                                users1.put(actor, new DataCount(users1.get(actor), 4, sample.payload.commits.length));
-//                                users2.put(actor, new DataCount(users2.get(actor), 4, sample.payload.commits.length));
-//                                users3.put(actor, new DataCount(users3.get(actor), 4, sample.payload.commits.length));
-//
-//                            } else {
-//                                users1.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
-//                                users3.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
-//                                users2.put(actor, new DataCount(0, 0, 0, 0, 1, 0));
-//                            }
                             break;
                         }
 
                         case "PullRequestEvent": {
                             String lng = sample.payload.pull_request.head.repo.language;
-                            if(lng != null){
-                                for (Trie trie: languagesTrie) {
-                                if (trie.search(lng)) {
-                                    trie.increment(lng);
-                                } else {
-                                    if (languages.indexOf(lng) < 0)
-                                        languages.add(lng);
+                            if (lng != null) {
+                                for (Trie trie : languagesTrie) {
+                                    if (trie.search(lng)) {
+                                        trie.increment(lng);
+                                    } else {
+                                        if (languages.indexOf(lng) < 0)
+                                            languages.add(lng);
 
-                                    trie.insert(lng);
-                                    trie.increment(lng);
-                                }
-
+                                        trie.insert(lng);
+                                        trie.increment(lng);
+                                    }
                                 }
                             }
-
-//                            if (lng != null)
-//                                if (languagesTrie3.search(lng)) {
-//                                    languagesTrie3.increment(lng);
-//                                } else {
-//                                    languages.add(lng);
-//                                    languagesTrie3.insert(lng);
-//                                    languagesTrie3.increment(lng);
-//                                }
-//
-//                            if (languagesTrie1.search(lng)) {
-//                                languagesTrie1.increment(lng);
-//                            } else {
-//                                languagesTrie1.insert(lng);
-//                                languagesTrie1.increment(lng);
-//                            }
-//
-//                            if (languagesTrie2.search(lng)) {
-//                                languagesTrie2.increment(lng);
-//                            } else {
-//                                languagesTrie2.insert(lng);
-//                                languagesTrie2.increment(lng);
-//                            }
-
                             Actor actor = sample.actor;
-
-                            for(ConcurrentHashMap<Actor, DataCount> user: users) {
+                            for (ConcurrentHashMap<Actor, DataCount> user : users) {
                                 if (user.containsKey(actor)) {
                                     user.put(actor, new DataCount(user.get(actor), 3, 1));
-                                }else{
+                                } else {
                                     user.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
                                 }
                             }
-//                            Actor actor = sample.actor;
-//                            if (users1.containsKey(actor)) {
-//                                users1.put(actor, new DataCount(users1.get(actor), 3, 1));
-//                                users2.put(actor, new DataCount(users2.get(actor), 3, 1));
-//                                users3.put(actor, new DataCount(users3.get(actor), 3, 1));
-//                            } else {
-//                                users1.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
-//                                users2.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
-//                                users3.put(actor, new DataCount(0, 0, 0, 1, 0, 0));
-//                            }
                             break;
                         }
                     }
